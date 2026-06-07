@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- MENU -->
+<div id="menu" class="screen">
+
+    <div class="sky-bg">
+        <div class="cloud" style="top:40px; left:30px;"></div>
+        <div class="cloud" style="top:80px; left:220px; transform:scale(0.7)"></div>
+        <div class="cloud" style="top:20px; left:310px; transform:scale(0.5)"></div>
+        <div class="sun"></div>
+    </div>
+
+    <div class="menu-panel">
+        <h1>🐦 FLAPPY BIRD</h1>
+
+        <input
+            type="text"
+            id="playerName"
+            placeholder="Enter your name"
+            maxlength="20"
+        >
+
+        <div class="buttons">
+            <button class="btn-green" onclick="startGame()">▶ START GAME</button>
+            <button class="btn-yellow" onclick="openLeaderboard()">🏆 LEADERBOARD</button>
+        </div>
+
+        <!-- MODE TOGGLE -->
+        <div class="mode-toggle">
+            <span class="mode-label">MODE:</span>
+            <div class="toggle-track" id="modeToggle" onclick="toggleMode()">
+                <div class="toggle-thumb" id="toggleThumb"></div>
+                <span class="toggle-text-left" id="toggleLeft">🖥️</span>
+                <span class="toggle-text-right" id="toggleRight">📱</span>
+            </div>
+            <span class="mode-name" id="modeName">DESKTOP</span>
+        </div>
+    </div>
+
+    <div class="ground-strip">
+        <div class="grass-top"></div>
+    </div>
+
+    <p class="footer">Made by Team 4</p>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="leaderboard" class="screen hidden">
+
+    <div class="sky-bg">
+        <div class="cloud" style="top:40px; left:30px;"></div>
+        <div class="cloud" style="top:20px; left:280px; transform:scale(0.6)"></div>
+        <div class="sun"></div>
+    </div>
+
+    <div class="menu-panel">
+        <h2>🏆 LEADERBOARD</h2>
+        <div id="scores"><p class="loading">Loading...</p></div>
+        <button class="btn-green" onclick="backToMenu()">← BACK</button>
+    </div>
+
+    <div class="ground-strip">
+        <div class="grass-top"></div>
+    </div>
+
+    <p class="footer">Made by Team 4</p>
+</div>
+
+<!-- GAME -->
+<div id="gameScreen" class="hidden">
+    <div class="game-wrapper">
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+        <!-- MOBILE D-PAD (hidden in desktop mode) -->
+        <div id="mobileControls" class="hidden">
+            <button id="tapBtn" ontouchstart="mobileTap()" onclick="mobileTap()">TAP</button>
+        </div>
+
+        <!-- GAME OVER OVERLAY -->
+        <div id="gameOverOverlay" class="hidden">
+            <div id="gameOverBox">
+                <h2>GAME OVER</h2>
+                <p id="gameOverScore"></p>
+                <div class="buttons">
+                    <button class="btn-green" onclick="restartGame()">▶ RESTART</button>
+                    <button class="btn-yellow" onclick="goToMenu()">🏠 MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer">Made by Team 4</p>
+    </div>
+</div>
+
+<!-- SCRIPTS (ORDER MATTERS!) -->
+<script src="js/config.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/database.js"></script>
+<script src="js/player.js"></script>
+<script src="js/pipes.js"></script>
+<script src="js/graphics.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
