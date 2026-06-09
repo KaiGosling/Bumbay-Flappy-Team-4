@@ -1,45 +1,42 @@
 // =====================
-// PIXEL BIRD DRAWING
+// BIRD DRAWING
 // =====================
 function drawBird(x, y) {
-    const px = 4;
     x = Math.floor(x);
     y = Math.floor(y);
 
-    const map = [
-        [0,0,2,2,2,2,0,0,0,0],
-        [0,2,1,1,1,1,2,2,0,0],
-        [2,1,1,1,1,1,1,1,2,0],
-        [2,1,4,5,1,1,1,1,2,3],
-        [2,1,4,1,1,1,1,1,2,3],
-        [2,1,1,1,6,6,1,1,2,0],
-        [2,1,1,6,6,1,1,1,2,0],
-        [0,2,1,1,1,1,1,2,0,0],
-        [0,0,2,1,1,1,2,0,0,0],
-        [0,0,0,2,2,2,0,0,0,0],
-    ];
-
-    const colors = {
-        1: "#FFD700",
-        2: "#2c1810",
-        3: "#FF6600",
-        4: "#ffffff",
-        5: "#000000",
-        6: "#FFA500",
-    };
-
-    for (let row = 0; row < map.length; row++) {
-        for (let col = 0; col < map[row].length; col++) {
-            const val = map[row][col];
-            if (val === 0) continue;
-            ctx.fillStyle = colors[val];
-            ctx.fillRect(x + col * px, y + row * px, px, px);
+    if (birdImg.complete && birdImg.naturalWidth !== 0) {
+        ctx.drawImage(birdImg, x, y, 40, 40);
+    } else {
+        const px = 4;
+        const map = [
+            [0,0,2,2,2,2,0,0,0,0],
+            [0,2,1,1,1,1,2,2,0,0],
+            [2,1,1,1,1,1,1,1,2,0],
+            [2,1,4,5,1,1,1,1,2,3],
+            [2,1,4,1,1,1,1,1,2,3],
+            [2,1,1,1,6,6,1,1,2,0],
+            [2,1,1,6,6,1,1,1,2,0],
+            [0,2,1,1,1,1,1,2,0,0],
+            [0,0,2,1,1,1,2,0,0,0],
+            [0,0,0,2,2,2,0,0,0,0],
+        ];
+        const colors = {
+            1: "#FFD700", 2: "#2c1810", 3: "#FF6600",
+            4: "#ffffff", 5: "#000000", 6: "#FFA500",
+        };
+        for (let row = 0; row < map.length; row++) {
+            for (let col = 0; col < map[row].length; col++) {
+                const val = map[row][col];
+                if (val === 0) continue;
+                ctx.fillStyle = colors[val];
+                ctx.fillRect(x + col * px, y + row * px, px, px);
+            }
         }
     }
 }
 
 function update() {
-
     if (gameState !== "playing") return;
 
     // =====================
@@ -51,7 +48,7 @@ function update() {
 
     const birdW = 40;
     const birdH = 40;
-    const pipeW = 50;
+    const pipeW = 52;
 
     // =====================
     // PIPE UPDATE + COLLISION
@@ -71,6 +68,7 @@ function update() {
         if (birdRight > pipeLeft && birdLeft < pipeRight) {
             if (birdTop < pipe.top || birdBottom > pipe.bottom) {
                 gameOver();
+                return; // stop processing after game over
             }
         }
 
@@ -81,7 +79,7 @@ function update() {
         }
     }
 
-    pipes = pipes.filter(p => p.x > -60);
+    pipes = pipes.filter(p => p.x > -80);
 
     if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - PIPE_SPACING) {
         createPipe();
@@ -100,22 +98,19 @@ function draw() {
     drawGround();
 
     // =====================
-    // PIPES
+    // BUILDINGS (obstacle pipes)
     // =====================
-    if (gameState === "playing" || gameState === "gameover") {
+    if (gameState === "playing" || gameState === "gameover" || gameState === "paused" || gameState === "countdown") {
         for (let pipe of pipes) {
+            const bw = 52;
 
-            ctx.fillStyle = "#2ecc71";
-            ctx.fillRect(pipe.x, 0, 50, pipe.top);
-            ctx.fillRect(pipe.x, pipe.bottom, 50, canvas.height);
+            if (pipe.top > 0) {
+                drawBuilding(pipe.x, 0, bw, pipe.top, true);
+            }
 
-            ctx.fillStyle = "#27ae60";
-            ctx.fillRect(pipe.x + 5, 0, 8, pipe.top);
-            ctx.fillRect(pipe.x + 5, pipe.bottom, 8, canvas.height);
-
-            ctx.fillStyle = "#145a32";
-            ctx.fillRect(pipe.x, 0, 2, pipe.top);
-            ctx.fillRect(pipe.x, pipe.bottom, 2, canvas.height);
+            if (pipe.bottom < canvas.height - 50) {
+                drawBuilding(pipe.x, pipe.bottom, bw, canvas.height - 50 - pipe.bottom, false);
+            }
         }
     }
 
@@ -126,11 +121,30 @@ function draw() {
     drawBird(birdX, birdY);
 
     // =====================
-    // SCORE
+    // SCORE (shown during play, pause, countdown, and gameover)
     // =====================
-    if (gameState === "playing") {
-        ctx.fillStyle = "black";
+    if (gameState === "playing" || gameState === "paused" || gameState === "countdown" || gameState === "gameover") {
+        ctx.fillStyle = "#FFD700";
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 3;
         ctx.font = "bold 16px monospace";
+        ctx.strokeText("SCORE: " + score, 10, 25);
         ctx.fillText("SCORE: " + score, 10, 25);
+    }
+
+    // =====================
+    // COUNTDOWN OVERLAY
+    // =====================
+    if (gameState === "countdown") {
+        drawCountdown();
+    }
+
+    // =====================
+    // GAME OVER — draw dark overlay on canvas too so the screen
+    // doesn't look "frozen/alive" while the HTML overlay loads
+    // =====================
+    if (gameState === "gameover") {
+        ctx.fillStyle = "rgba(0,0,0,0.55)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 }

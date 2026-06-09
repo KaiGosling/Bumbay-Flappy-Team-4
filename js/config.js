@@ -32,6 +32,15 @@ let playerName = "";
 // =====================
 let pipes = [];
 
-const PIPE_SPEED = 2.2;
-const PIPE_SPACING = 300;
-const PIPE_GAP = 200;
+let PIPE_SPEED   = 2.2;
+let PIPE_SPACING = 300;
+let PIPE_GAP     = 200;
+
+// =====================
+// ASSETS
+// =====================
+const birdImg = new Image();
+
+const pipeImg = new Image();
+
+const logoImg = new Image();

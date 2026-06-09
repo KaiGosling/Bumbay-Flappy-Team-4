@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird</title>
+    <title>Bumbay Flappy</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div id="game-root">
 
 <!-- MENU -->
 <div id="menu" class="screen">
@@ -19,7 +21,15 @@
     </div>
 
     <div class="menu-panel">
-        <h1>🐦 FLAPPY BIRD</h1>
+
+        <!-- LOGO -->
+        <img
+            src="assets/images/logo.png"
+            alt="Bumbay Flappy"
+            class="game-logo"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';"
+        >
+        <h1 id="logoFallback" style="display:none;">🐦 BUMBAY FLAPPY</h1>
 
         <input
             type="text"
@@ -28,21 +38,19 @@
             maxlength="20"
         >
 
+        <!-- DIFFICULTY -->
+        <div class="difficulty-label">DIFFICULTY:</div>
+        <div class="difficulty-buttons">
+            <button class="btn-diff active" id="diff-easy"     onclick="setDifficulty('easy')">😊 EASY</button>
+            <button class="btn-diff"        id="diff-medium"   onclick="setDifficulty('medium')">😤 MEDIUM</button>
+            <button class="btn-diff"        id="diff-filipino" onclick="setDifficulty('filipino')">🇵🇭 FILIPINO</button>
+        </div>
+
         <div class="buttons">
-            <button class="btn-green" onclick="startGame()">▶ START GAME</button>
+            <button class="btn-green"  onclick="startGame()">▶ START GAME</button>
             <button class="btn-yellow" onclick="openLeaderboard()">🏆 LEADERBOARD</button>
         </div>
 
-        <!-- MODE TOGGLE -->
-        <div class="mode-toggle">
-            <span class="mode-label">MODE:</span>
-            <div class="toggle-track" id="modeToggle" onclick="toggleMode()">
-                <div class="toggle-thumb" id="toggleThumb"></div>
-                <span class="toggle-text-left" id="toggleLeft">🖥️</span>
-                <span class="toggle-text-right" id="toggleRight">📱</span>
-            </div>
-            <span class="mode-name" id="modeName">DESKTOP</span>
-        </div>
     </div>
 
     <div class="ground-strip">
@@ -62,6 +70,7 @@
     </div>
 
     <div class="menu-panel">
+        <img src="assets/images/logo.png" alt="Bumbay Flappy" class="game-logo" onerror="this.style.display='none';">
         <h2>🏆 LEADERBOARD</h2>
         <div id="scores"><p class="loading">Loading...</p></div>
         <button class="btn-green" onclick="backToMenu()">← BACK</button>
@@ -77,20 +86,33 @@
 <!-- GAME -->
 <div id="gameScreen" class="hidden">
     <div class="game-wrapper">
+
+        <!-- PAUSE BUTTON -->
+        <button id="pauseBtn" class="btn-pause hidden" onclick="togglePause()">⏸ PAUSE</button>
+
         <canvas id="gameCanvas" width="400" height="600"></canvas>
 
-        <!-- MOBILE D-PAD (hidden in desktop mode) -->
-        <div id="mobileControls" class="hidden">
-            <button id="tapBtn" ontouchstart="mobileTap()" onclick="mobileTap()">TAP</button>
+        <!-- PAUSE OVERLAY -->
+        <div id="pauseOverlay" class="hidden">
+            <div id="pauseBox">
+                <img src="assets/images/logo.png" alt="Bumbay Flappy" class="game-logo overlay-logo" onerror="this.style.display='none';">
+                <h2>⏸ PAUSED</h2>
+                <p class="pause-hint">Press <span>P</span> or click Resume</p>
+                <div class="buttons">
+                    <button class="btn-green"  onclick="resumeGame()">▶ RESUME</button>
+                    <button class="btn-yellow" onclick="goToMenu()">🏠 MENU</button>
+                </div>
+            </div>
         </div>
 
         <!-- GAME OVER OVERLAY -->
         <div id="gameOverOverlay" class="hidden">
             <div id="gameOverBox">
+                <img src="assets/images/logo.png" alt="Bumbay Flappy" class="game-logo overlay-logo" onerror="this.style.display='none';">
                 <h2>GAME OVER</h2>
                 <p id="gameOverScore"></p>
                 <div class="buttons">
-                    <button class="btn-green" onclick="restartGame()">▶ RESTART</button>
+                    <button class="btn-green"  onclick="restartGame()">▶ RESTART</button>
                     <button class="btn-yellow" onclick="goToMenu()">🏠 MENU</button>
                 </div>
             </div>
@@ -99,6 +121,8 @@
         <p class="footer">Made by Team 4</p>
     </div>
 </div>
+
+</div><!-- /#game-root -->
 
 <!-- SCRIPTS (ORDER MATTERS!) -->
 <script src="js/config.js"></script>
