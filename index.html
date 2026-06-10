@@ -72,7 +72,7 @@
     <div class="menu-panel">
         <img src="assets/images/logo.png" alt="Bumbay Flappy" class="game-logo" onerror="this.style.display='none';">
         <h2>🏆 LEADERBOARD</h2>
-        <div id="scores"><p class="loading">Loading...</p></div>
+        <div id="scores"><p class="loading">⏳ Loading scores...</p></div>
         <button class="btn-green" onclick="backToMenu()">← BACK</button>
     </div>
 
@@ -87,10 +87,10 @@
 <div id="gameScreen" class="hidden">
     <div class="game-wrapper">
 
-        <!-- PAUSE BUTTON -->
-        <button id="pauseBtn" class="btn-pause hidden" onclick="togglePause()">⏸ PAUSE</button>
-
         <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+        <!-- PAUSE BUTTON — placed BELOW canvas so it never overlaps the day/score display -->
+        <button id="pauseBtn" class="btn-pause hidden" onclick="togglePause()">⏸ PAUSE</button>
 
         <!-- PAUSE OVERLAY -->
         <div id="pauseOverlay" class="hidden">
@@ -111,6 +111,7 @@
                 <img src="assets/images/logo.png" alt="Bumbay Flappy" class="game-logo overlay-logo" onerror="this.style.display='none';">
                 <h2>GAME OVER</h2>
                 <p id="gameOverScore"></p>
+                <p id="gameOverTime"></p>
                 <div class="buttons">
                     <button class="btn-green"  onclick="restartGame()">▶ RESTART</button>
                     <button class="btn-yellow" onclick="goToMenu()">🏠 MENU</button>
@@ -133,6 +134,8 @@
 <script src="js/graphics.js"></script>
 <script src="js/game.js"></script>
 <script src="js/main.js"></script>
+
+
 
 </body>
 </html>

@@ -203,6 +203,8 @@ function startGame() {
     velocity = 0;
     score    = 0;
     pipes    = [];
+    gameTimer   = 0;
+    timerFrames = 0;
 
     document.getElementById("gameOverOverlay").classList.add("hidden");
     document.getElementById("pauseOverlay").classList.add("hidden");
@@ -226,6 +228,8 @@ function restartGame() {
     velocity = 0;
     score    = 0;
     pipes    = [];
+    gameTimer   = 0;
+    timerFrames = 0;
 
     document.getElementById("gameOverOverlay").classList.add("hidden");
     document.getElementById("pauseOverlay").classList.add("hidden");
@@ -256,6 +260,9 @@ function gameOver() {
     document.getElementById("pauseBtn").classList.add("hidden");
     document.getElementById("pauseOverlay").classList.add("hidden");
     document.getElementById("gameOverScore").textContent = "SCORE: " + score;
+    const mins = String(Math.floor(gameTimer / 60)).padStart(2, "0");
+    const secs = String(gameTimer % 60).padStart(2, "0");
+    document.getElementById("gameOverTime").textContent  = "TIME: " + mins + ":" + secs;
     document.getElementById("gameOverOverlay").classList.remove("hidden");
 }
 

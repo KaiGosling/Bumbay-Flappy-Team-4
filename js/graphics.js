@@ -224,8 +224,9 @@ function drawCycleHUD(night) {
         while (nextAt <= score) nextAt += 5000;
     }
 
+    // Positioned bottom-right so it never overlaps the pause button (top-right)
     const x = canvas.width - 4;
-    const y = 8;
+    const y = canvas.height - 90;   // sits just above the ground strip
 
     ctx.fillStyle = isNight ? "rgba(20,20,50,0.75)" : "rgba(255,240,180,0.75)";
     ctx.fillRect(x - 90, y, 90, 32);

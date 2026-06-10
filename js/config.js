@@ -27,6 +27,10 @@ let jump = -7.8;
 let score = 0;
 let playerName = "";
 
+// Timer (in seconds, tracked via elapsed frames)
+let gameTimer     = 0;   // total seconds survived
+let timerFrames   = 0;   // frame counter (60 frames = 1 second)
+
 // =====================
 // PIPES
 // =====================
