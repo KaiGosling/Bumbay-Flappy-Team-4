@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2026 at 04:10 PM
+-- Generation Time: Jun 10, 2026 at 09:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,30 +30,20 @@ SET time_zone = "+00:00";
 CREATE TABLE `scores` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `score` int(11) NOT NULL,
-  `created_at` datetime DEFAULT current_timestamp()
+  `score` int(11) NOT NULL DEFAULT 0,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `time` int(11) NOT NULL DEFAULT 0 COMMENT 'seconds survived',
+  `difficulty` varchar(10) NOT NULL DEFAULT 'easy'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `scores`
 --
 
-INSERT INTO `scores` (`id`, `name`, `score`, `created_at`) VALUES
-(11, 'das', 0, '2026-06-07 21:41:09'),
-(12, 'Player', 0, '2026-06-07 21:41:34'),
-(13, 'Player', 0, '2026-06-07 21:41:54'),
-(14, 'Player', 15, '2026-06-07 21:42:10'),
-(15, 'Player', 1, '2026-06-07 21:42:44'),
-(16, 'Player', 0, '2026-06-07 21:42:46'),
-(17, 'Player', 0, '2026-06-07 21:42:47'),
-(18, 'Player', 1, '2026-06-07 21:42:49'),
-(19, 'Player', 0, '2026-06-07 21:44:22'),
-(20, 'Player', 0, '2026-06-07 21:47:30'),
-(21, 'Player', 0, '2026-06-07 21:47:33'),
-(22, 'Player', 7, '2026-06-07 21:55:41'),
-(23, 'Player', 0, '2026-06-07 21:55:51'),
-(24, 'Player', 0, '2026-06-07 21:55:54'),
-(25, 'Player', 0, '2026-06-07 21:56:04');
+INSERT INTO `scores` (`id`, `name`, `score`, `created_at`, `time`, `difficulty`) VALUES
+(110, 'Rolf', 5, '2026-06-10 15:39:30', 19, 'easy'),
+(111, 'Rolf', 4, '2026-06-10 15:39:46', 10, 'medium'),
+(112, 'Rolf', 1, '2026-06-10 15:40:01', 2, 'filipino');
 
 --
 -- Indexes for dumped tables
@@ -63,7 +53,9 @@ INSERT INTO `scores` (`id`, `name`, `score`, `created_at`) VALUES
 -- Indexes for table `scores`
 --
 ALTER TABLE `scores`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_name` (`name`),
+  ADD KEY `idx_score` (`score`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -73,7 +65,7 @@ ALTER TABLE `scores`
 -- AUTO_INCREMENT for table `scores`
 --
 ALTER TABLE `scores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
