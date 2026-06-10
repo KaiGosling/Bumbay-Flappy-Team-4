@@ -40,6 +40,15 @@ function update() {
     if (gameState !== "playing") return;
 
     // =====================
+    // TIMER
+    // =====================
+    timerFrames++;
+    if (timerFrames >= 60) {
+        timerFrames = 0;
+        gameTimer++;
+    }
+
+    // =====================
     // PHYSICS
     // =====================
     velocity += gravity;
@@ -130,6 +139,14 @@ function draw() {
         ctx.font = "bold 16px monospace";
         ctx.strokeText("SCORE: " + score, 10, 25);
         ctx.fillText("SCORE: " + score, 10, 25);
+
+        // Timer display — shown below score
+        const mins = String(Math.floor(gameTimer / 60)).padStart(2, "0");
+        const secs = String(gameTimer % 60).padStart(2, "0");
+        const timeStr = "TIME: " + mins + ":" + secs;
+        ctx.font = "bold 13px monospace";
+        ctx.strokeText(timeStr, 10, 44);
+        ctx.fillText(timeStr, 10, 44);
     }
 
     // =====================
